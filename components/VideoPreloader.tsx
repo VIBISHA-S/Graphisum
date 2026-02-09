@@ -32,8 +32,8 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
         if (!isIntroDone) return;
 
         if (index < videos.length) {
-            // Sequence Logic: fast punchy transitions
-            const duration = Math.max(400, 1000 - (index * 100)); // Adjusted speed ramp for 10 cards
+            // Sequence Logic: Constant deliberate pace
+            const duration = 1200;
 
             const timer = setTimeout(() => {
                 setIndex((prev) => prev + 1);
@@ -74,7 +74,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                     // Active Sequence State (Tunnel)
                     // The "future" cards bunch up behind the active one
                     const tunnelY = (i - index) * 30;
-                    const tunnelZ = -(i - index) * 50;
+                    const tunnelZ = -(i - index) * 150; // Deeper tunnel for visibility
                     const tunnelScale = 1 - (i - index) * 0.05;
 
                     return (
