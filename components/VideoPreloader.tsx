@@ -98,7 +98,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 filter: "blur(0px)"
                             } : {
                                 // SEQUENCE: Tunnel / Active
-                                opacity: isActive ? 1 : 1 - (i - index) * 0.3,
+                                opacity: isActive ? 1 : Math.max(0.1, 1 - (i - index) * 0.1), // Keep fading but visible
                                 x: 0,
                                 y: isActive ? 0 : tunnelY,
                                 z: isActive ? 0 : tunnelZ,
