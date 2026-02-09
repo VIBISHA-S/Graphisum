@@ -43,7 +43,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
             // Finished
             const finishTimer = setTimeout(() => {
                 onComplete();
-            }, 800);
+            }, 1600); // Wait for dissolve (1.5s)
             return () => clearTimeout(finishTimer);
         }
     }, [index, isIntroDone, onComplete]);
@@ -109,17 +109,18 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                             }}
                             // EXITS
                             exit={isLast ? {
-                                // "Shutter" Final Reveal
-                                scale: 50,
+                                // Final Card: Simple Dissolve to Hero
                                 opacity: 0,
-                                z: 1000,
+                                scale: 1.05,
+                                z: 0,
+                                transition: { duration: 1.5, ease: "easeInOut" } // Smooth long fade
                             } : {
-                                // Standard Fly Away
-                                scale: 1.5,
-                                opacity: 0,
-                                z: 200,
-                                rotateZ: (i % 2 === 0 ? 2 : -2) * 5,
-                                filter: "blur(10px)"
+                                // Fly Away Sequence (Zoom past camera)
+                                scale: [1, 3],
+                                opacity: [1, 0],
+                                z: [0, 500],
+                                filter: ["blur(0px)", "blur(20px)"],
+                                transition: { duration: 0.8, ease: "easeIn" }
                             }}
                             transition={{
                                 duration: isIntroDone ? 0.8 : 1.2, // Slower intro, punchier sequence
@@ -145,7 +146,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                         </motion.div>
                     );
                 })}
-            </AnimatePresence>
-        </motion.div>
+            </AnimatePresence >
+        </motion.div >
     );
 }
