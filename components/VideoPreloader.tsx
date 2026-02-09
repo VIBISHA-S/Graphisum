@@ -75,7 +75,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                     // The "future" cards bunch up behind the active one
                     const tunnelY = (i - index) * 30;
                     const tunnelZ = -(i - index) * 60; // Dense tunnel to keep all visible in perspective
-                    const tunnelScale = 1 - (i - index) * 0.05;
+                    const tunnelScale = 1 - (i - index) * 0.04; // Slower decay: cards stay larger
 
                     return (
                         <motion.div
@@ -98,14 +98,14 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 filter: "blur(0px)"
                             } : {
                                 // SEQUENCE: Tunnel / Active
-                                opacity: isActive ? 1 : Math.max(0.1, 1 - (i - index) * 0.1), // Keep fading but visible
+                                opacity: isActive ? 1 : Math.max(0.2, 1 - (i - index) * 0.1), // Min opacity 0.2
                                 x: 0,
                                 y: isActive ? 0 : tunnelY,
                                 z: isActive ? 0 : tunnelZ,
                                 rotateX: isActive ? 0 : (i - index) * 2,
                                 rotateY: 0,
                                 scale: isActive ? 1.1 : tunnelScale,
-                                filter: isActive ? "blur(0px)" : `blur(${(i - index) * 2}px)`
+                                filter: isActive ? "blur(0px)" : `blur(${(i - index) * 1}px)` // Less blur
                             }}
                             // EXITS
                             exit={isLast ? {
@@ -115,15 +115,15 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 z: 0,
                                 transition: { duration: 1.5, ease: "easeInOut" } // Smooth long fade
                             } : {
-                                // Fly Away Sequence (Zoom past camera)
+                                // Fly Away Sequence (matches the pace of the stack moving forward)
                                 scale: [1, 3],
                                 opacity: [1, 0],
                                 z: [0, 500],
                                 filter: ["blur(0px)", "blur(20px)"],
-                                transition: { duration: 0.8, ease: "easeIn" }
+                                transition: { duration: 1.2, ease: "easeInOut" } // SYNCED with step duration
                             }}
                             transition={{
-                                duration: isIntroDone ? 0.5 : 1.2, // Snap to center (0.5s)
+                                duration: isIntroDone ? 0.5 : 1.2, // Snap to center
                                 ease: [0.76, 0, 0.24, 1]
                             }}
                             className="absolute w-[60vw] md:w-[400px] aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center bg-black"
@@ -146,7 +146,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                         </motion.div>
                     );
                 })}
-            </AnimatePresence >
-        </motion.div >
+            </AnimatePresence>
+        </motion.div>
     );
 }
