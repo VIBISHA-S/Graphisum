@@ -23,7 +23,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
         const introTimer = setTimeout(() => {
             setIsIntroDone(true);
             setIndex(0); // Start the removal sequence
-        }, 2000); // Increased to 2s for visibility
+        }, 1200); // Reduced to 1.2s for snappiness
 
         return () => clearTimeout(introTimer);
     }, []);
@@ -66,7 +66,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                     // Spread centered: (i - (total-1)/2) * offset
                     const centerOffset = (videos.length - 1) / 2;
                     // Adjusted spread to fit 10 items on screen: ~1000px total height
-                    const introY = (i - centerOffset) * 110;
+                    const introY = (i - centerOffset) * 140;
                     const introScale = 0.6; // Smaller scale to fit stack
                     const introZ = 0;
                     const introRotateX = (i - centerOffset) * -10; // Subtle vertical fan angle
@@ -123,7 +123,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 transition: { duration: 0.8, ease: "easeIn" }
                             }}
                             transition={{
-                                duration: isIntroDone ? 0.8 : 1.2, // Slower intro, punchier sequence
+                                duration: isIntroDone ? 0.5 : 1.2, // Snap to center (0.5s)
                                 ease: [0.76, 0, 0.24, 1]
                             }}
                             className="absolute w-[60vw] md:w-[400px] aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center bg-black"
