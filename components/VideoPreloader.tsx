@@ -11,9 +11,7 @@ const videos = [
     { id: 5, color: "#2a2a2a", text: "MOTION DESIGN" },
     { id: 6, color: "#111111", text: "3D VISUALIZATION" },
     { id: 7, color: "#0d0d0d", text: "UI/UX DESIGN" },
-    { id: 8, color: "#222222", text: "STRATEGY" },
-    { id: 9, color: "#191919", text: "DEVELOPMENT" },
-    { id: 10, color: "#000000", text: "GRAPHISUM" } // Final card
+    { id: 8, color: "#000000", text: "GRAPHISUM" } // Final card
 ];
 
 export default function VideoPreloader({ onComplete }: { onComplete: () => void }) {
