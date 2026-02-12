@@ -43,7 +43,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
             // Finished
             const finishTimer = setTimeout(() => {
                 onComplete();
-            }, 1600); // Wait for dissolve (1.5s)
+            }, 1200); // Wait for Fly Away (1.2s)
             return () => clearTimeout(finishTimer);
         }
     }, [index, isIntroDone, onComplete]);
@@ -108,19 +108,13 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 filter: isActive ? "blur(0px)" : `blur(${(i - index) * 1}px)` // Less blur
                             }}
                             // EXITS
-                            exit={isLast ? {
-                                // Final Card: Simple Dissolve to Hero
-                                opacity: 0,
-                                scale: 1.05,
-                                z: 0,
-                                transition: { duration: 1.5, ease: "easeInOut" } // Smooth long fade
-                            } : {
-                                // Fly Away Sequence (matches the pace of the stack moving forward)
+                            exit={{
+                                // Fly Away Sequence (Hyper-Zoom for ALL cards)
                                 scale: [1, 3],
                                 opacity: [1, 0],
                                 z: [0, 500],
                                 filter: ["blur(0px)", "blur(20px)"],
-                                transition: { duration: 1.2, ease: "easeInOut" } // SYNCED with step duration
+                                transition: { duration: 1.2, ease: "easeInOut" }
                             }}
                             transition={{
                                 duration: isIntroDone ? 0.5 : 1.2, // Snap to center
