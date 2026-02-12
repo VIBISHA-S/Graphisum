@@ -11,9 +11,7 @@ const videos = [
     { id: 5, color: "#2a2a2a", text: "MOTION DESIGN" },
     { id: 6, color: "#111111", text: "3D VISUALIZATION" },
     { id: 7, color: "#0d0d0d", text: "UI/UX DESIGN" },
-    { id: 8, color: "#222222", text: "STRATEGY" },
-    { id: 9, color: "#191919", text: "DEVELOPMENT" },
-    { id: 10, color: "#000000", text: "GRAPHISUM" } // Final card
+    { id: 8, color: "#000000", text: "GRAPHISUM" } // Final card
 ];
 
 export default function VideoPreloader({ onComplete }: { onComplete: () => void }) {
@@ -25,7 +23,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
         const introTimer = setTimeout(() => {
             setIsIntroDone(true);
             setIndex(0); // Start the removal sequence
-        }, 2000); // Increased to 2s for visibility
+        }, 1200); // Reduced to 1.2s for snappiness
 
         return () => clearTimeout(introTimer);
     }, []);
@@ -34,8 +32,8 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
         if (!isIntroDone) return;
 
         if (index < videos.length) {
-            // Sequence Logic: fast punchy transitions
-            const duration = Math.max(400, 1000 - (index * 100)); // Adjusted speed ramp for 10 cards
+            // Sequence Logic: Constant deliberate pace
+            const duration = 1200;
 
             const timer = setTimeout(() => {
                 setIndex((prev) => prev + 1);
@@ -45,7 +43,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
             // Finished
             const finishTimer = setTimeout(() => {
                 onComplete();
-            }, 800);
+            }, 1200); // Wait for Fly Away (1.2s)
             return () => clearTimeout(finishTimer);
         }
     }, [index, isIntroDone, onComplete]);
@@ -68,7 +66,7 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                     // Spread centered: (i - (total-1)/2) * offset
                     const centerOffset = (videos.length - 1) / 2;
                     // Adjusted spread to fit 10 items on screen: ~1000px total height
-                    const introY = (i - centerOffset) * 110;
+                    const introY = (i - centerOffset) * 140;
                     const introScale = 0.6; // Smaller scale to fit stack
                     const introZ = 0;
                     const introRotateX = (i - centerOffset) * -10; // Subtle vertical fan angle
@@ -76,13 +74,13 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                     // Active Sequence State (Tunnel)
                     // The "future" cards bunch up behind the active one
                     const tunnelY = (i - index) * 30;
-                    const tunnelZ = -(i - index) * 50;
-                    const tunnelScale = 1 - (i - index) * 0.05;
+                    const tunnelZ = -(i - index) * 60; // Dense tunnel to keep all visible in perspective
+                    const tunnelScale = 1 - (i - index) * 0.04; // Slower decay: cards stay larger
 
                     return (
                         <motion.div
                             key={item.id}
-                            layoutId={`card-${item.id}`}
+
                             initial={{
                                 opacity: 0,
                                 y: 50,
@@ -100,31 +98,26 @@ export default function VideoPreloader({ onComplete }: { onComplete: () => void 
                                 filter: "blur(0px)"
                             } : {
                                 // SEQUENCE: Tunnel / Active
-                                opacity: isActive ? 1 : 1 - (i - index) * 0.3,
+                                opacity: isActive ? 1 : Math.max(0.2, 1 - (i - index) * 0.1), // Min opacity 0.2
                                 x: 0,
                                 y: isActive ? 0 : tunnelY,
                                 z: isActive ? 0 : tunnelZ,
                                 rotateX: isActive ? 0 : (i - index) * 2,
                                 rotateY: 0,
                                 scale: isActive ? 1.1 : tunnelScale,
-                                filter: isActive ? "blur(0px)" : `blur(${(i - index) * 2}px)`
+                                filter: isActive ? "blur(0px)" : `blur(${(i - index) * 1}px)` // Less blur
                             }}
                             // EXITS
-                            exit={isLast ? {
-                                // "Shutter" Final Reveal
-                                scale: 50,
-                                opacity: 0,
-                                z: 1000,
-                            } : {
-                                // Standard Fly Away
-                                scale: 1.5,
-                                opacity: 0,
-                                z: 200,
-                                rotateZ: (i % 2 === 0 ? 2 : -2) * 5,
-                                filter: "blur(10px)"
+                            exit={{
+                                // Fly Away Sequence (Hyper-Zoom for ALL cards)
+                                scale: [1, 3],
+                                opacity: [1, 0],
+                                z: [0, 500],
+                                filter: ["blur(0px)", "blur(20px)"],
+                                transition: { duration: 1.2, ease: "easeInOut" }
                             }}
                             transition={{
-                                duration: isIntroDone ? 0.8 : 1.2, // Slower intro, punchier sequence
+                                duration: isIntroDone ? 0.5 : 1.2, // Snap to center
                                 ease: [0.76, 0, 0.24, 1]
                             }}
                             className="absolute w-[60vw] md:w-[400px] aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center bg-black"
