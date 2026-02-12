@@ -96,7 +96,6 @@ export default function EngagementModels() {
                                     {/* Text Content */}
                                     <div className="mt-8 lg:mt-0">
                                         <motion.h3
-                                            layout
                                             className={`text-3xl md:text-5xl font-bold uppercase tracking-tight leading-none mb-6 ${isHovered ? 'text-white' : 'text-white/60'}`}
                                         >
                                             {model.title}
