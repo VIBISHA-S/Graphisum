@@ -75,8 +75,8 @@ export default function EngagementModels() {
                                     style={{ background: `radial-gradient(circle at bottom right, ${model.accent}, transparent 70%)` }}
                                 />
 
-                                {/* Content Container */}
-                                <div className="relative z-10 flex flex-col h-full justify-between">
+                                {/* Content Container - Anchored Top to prevent jumping */}
+                                <div className="relative z-10 flex flex-col h-full justify-start gap-10 lg:gap-32">
 
                                     {/* Number / Top Lable */}
                                     <div className="flex justify-between items-start">
@@ -94,9 +94,8 @@ export default function EngagementModels() {
                                     </div>
 
                                     {/* Text Content */}
-                                    <div className="mt-8 lg:mt-0">
+                                    <div className="">
                                         <motion.h3
-                                            layout
                                             className={`text-3xl md:text-5xl font-bold uppercase tracking-tight leading-none mb-6 ${isHovered ? 'text-white' : 'text-white/60'}`}
                                         >
                                             {model.title}
