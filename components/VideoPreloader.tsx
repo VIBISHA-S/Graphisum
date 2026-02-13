@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const videos = [
-    { id: 1, color: "#1a1a1a", text: "SHOWREEL 2024" },
+    { id: 1, color: "#1a1a1a", text: "SHOWREEL 2025" },
     { id: 2, color: "#0a3f2f", text: "BRAND IDENTITY" },
     { id: 3, color: "#0f1610", text: "WEB EXPERIENCES" },
     { id: 4, color: "#1c1c1c", text: "DIGITAL CAMPAIGNS" },
